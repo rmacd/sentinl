@@ -39,7 +39,7 @@ Boss wants to see charts and reports? SENTINL can grab timed snapshots of Kibana
 
 #### Snapshot Plugin Install
 <pre>
-/opt/kibana/bin/kibana plugin --install sentinl -u https://github.com/sirensolutions/sentinl/releases/download/tag-5.3.2/sentinl.zip
+/opt/kibana/bin/kibana-plugin install https://github.com/sirensolutions/sentinl/releases/download/tag-5.4.0/sentinl.zip
 </pre>
 
 #### Gulp Plugin Install
