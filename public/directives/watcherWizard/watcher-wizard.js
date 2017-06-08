@@ -5,10 +5,12 @@ import confirmMessage from '../../templates/confirm-message.html';
 import watcherEmailAction from './watcher-wizard.html';
 
 import { app } from '../../app.module';
+import WatcherHelper from '../../classes/WatcherHelper';
 
 app.directive('watcherWizard', function ($modal, $route, $log, $http, $timeout, Notifier) {
   function wizardDirective($scope, element, attrs) {
 
+    const wHelper = new WatcherHelper();
     $scope.notify = new Notifier();
 
     $scope.form = {
@@ -87,7 +89,7 @@ app.directive('watcherWizard', function ($modal, $route, $log, $http, $timeout, 
       };
 
       _.forOwn($scope.watcher._source.actions, (action) => {
-        if (!action.thottle_period) {
+        if (!action.throttle_period) {
           action.throttle_period = '30s';
         }
         action.$$throttle = {
@@ -219,6 +221,10 @@ app.directive('watcherWizard', function ($modal, $route, $log, $http, $timeout, 
       confirmModal.result.then((response) => {
         if (response === 'yes') {
           delete $scope.watcher._source.actions[actionName];
+
+          if ($scope.watcher._source.report && !wHelper.numOfActionTypes($scope.watcher, 'report')) {
+            delete $scope.watcher._source.report;
+          }
         }
       }, () => {
         $log.info(`You choose not deleting the action "${actionName}"`);
